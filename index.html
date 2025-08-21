@@ -139,6 +139,9 @@
     // Force header usage if available
     const GVIZ_URL = CSV_URL.includes('headers=') ? CSV_URL : CSV_URL + '&headers=1';
 
+    console.log("GVIZ_URL");
+    console.log(GVIZ_URL);
+
     // UI
     const els = {
       status: document.getElementById('status'),
