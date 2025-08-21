@@ -109,7 +109,6 @@
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/1yphdwEzw8mNy3YIXU7KAfHIdoCIJRtvtT5eFTmAzKSE/gviz/tq?gid=0&headers=1&tqx=out:json';
     // 2) Minimal CSV parser (handles quotes and commas)
     function parseCSV(text){
-      console.log(text);
       const rows = [];
       let i=0, field='', row=[], inQuotes=false;
       while(i < text.length){
@@ -275,8 +274,11 @@
         const res = await fetch(CSV_URL, { cache:'no-store' });
         if(!res.ok) throw new Error(`HTTP ${res.status}`);
         const text = await res.text();
+        console.log('text:', text);
         const rows = parseCSV(text);
+        console.log('Rows length:', rows.length);
         const data = rowsToObjects(rows);
+        console.log('data:', data);
 
         if(!data.length) throw new Error('No rows parsed. Check header names and published sheet selection.');
         state.QUESTIONS = data;
