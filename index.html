@@ -3,72 +3,42 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luck By Chance — Syngenta..!</title>
+  <title>Luck By Chance — Google Syngenta...!</title>
   <style>
-    :root{
-      --bg:#0f172a; --bg-accent:#111827; --card:#111827; --text:#e5e7eb; --muted:#9ca3af;
-      --accent:#22c55e; --accent-2:#60a5fa; --danger:#ef4444; --shadow:0 20px 40px rgba(0,0,0,.35); --radius:16px;
-    }
+    :root{ --bg:#0f172a; --bg-accent:#111827; --card:#111827; --text:#e5e7eb; --muted:#9ca3af; --accent:#22c55e; --accent-2:#60a5fa; --danger:#ef4444; --shadow:0 20px 40px rgba(0,0,0,.35); --radius:16px; }
     @media (prefers-color-scheme: light){
-      :root{
-        --bg:#f3f4f6; --bg-accent:#e5e7eb; --card:#ffffff; --text:#0f172a; --muted:#475569;
-        --accent:#16a34a; --accent-2:#2563eb; --danger:#dc2626; --shadow:0 10px 30px rgba(0,0,0,.08);
-      }
+      :root{ --bg:#f3f4f6; --bg-accent:#e5e7eb; --card:#fff; --text:#0f172a; --muted:#475569; --accent:#16a34a; --accent-2:#2563eb; --danger:#dc2626; --shadow:0 10px 30px rgba(0,0,0,.08); }
     }
     *{box-sizing:border-box}
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background:
-        radial-gradient(1200px 600px at 20% -10%, rgba(96,165,250,0.15), transparent 60%),
-        radial-gradient(1200px 600px at 120% 10%, rgba(34,197,94,0.15), transparent 60%),
-        var(--bg);
-      color:var(--text); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;
-    }
-    .wrap{ width:min(900px, 100%); }
+    body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:
+      radial-gradient(1200px 600px at 20% -10%, rgba(96,165,250,0.15), transparent 60%),
+      radial-gradient(1200px 600px at 120% 10%, rgba(34,197,94,0.15), transparent 60%),
+      var(--bg); color:var(--text); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+    .wrap{ width:min(900px,100%); }
     header{ display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px; }
-    .title{ font-size:clamp(20px, 3vw, 28px); font-weight:700; }
+    .title{ font-size:clamp(20px,3vw,28px); font-weight:700; }
     .round{ font-size:14px; color:var(--muted); }
-    .card{
-      background: linear-gradient(180deg, var(--card), var(--bg-accent));
-      border-radius: var(--radius); box-shadow: var(--shadow);
-      padding: clamp(18px, 3.5vw, 28px);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .badge{
-      display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px;
-      background: linear-gradient(180deg, rgba(96,165,250,0.18), rgba(96,165,250,0.08));
-      color: var(--accent-2); font-weight:600; font-size:12px; letter-spacing:.3px; text-transform:uppercase;
-      border:1px solid rgba(96,165,250,0.35);
-    }
+    .card{ background:linear-gradient(180deg,var(--card),var(--bg-accent)); border-radius:var(--radius); box-shadow:var(--shadow); padding:clamp(18px,3.5vw,28px); border:1px solid rgba(255,255,255,0.06); }
+    .badge{ display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; background:linear-gradient(180deg, rgba(96,165,250,0.18), rgba(96,165,250,0.08)); color:var(--accent-2); font-weight:600; font-size:12px; letter-spacing:.3px; text-transform:uppercase; border:1px solid rgba(96,165,250,0.35); }
     .content{ margin-top:16px; }
-    .prompt{ font-size:clamp(20px, 3vw, 26px); font-weight:700; margin:10px 0 6px; }
+    .prompt{ font-size:clamp(20px,3vw,26px); font-weight:700; margin:10px 0 6px; }
     .reveal{ display:grid; gap:10px; margin-top:12px; }
-    .hint,.answer{
-      border:1px dashed rgba(255,255,255,0.18); background:rgba(255,255,255,0.04);
-      padding:14px 16px; border-radius:12px;
-    }
+    .hint,.answer{ border:1px dashed rgba(255,255,255,0.18); background:rgba(255,255,255,0.04); padding:14px 16px; border-radius:12px; }
     .hint h3,.answer h3{ margin:0 0 6px 0; font-size:14px; color:var(--muted); font-weight:700; letter-spacing:.3px; text-transform:uppercase; }
-    .hint p,.answer p{ margin:0; font-size:clamp(16px, 2.4vw, 20px); }
+    .hint p,.answer p{ margin:0; font-size:clamp(16px,2.4vw,20px); }
     .hint.hidden,.answer.hidden{ display:none; }
     .controls{ display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
-    button{
-      appearance:none; border:none; cursor:pointer; padding:12px 16px; border-radius:12px; font-weight:700;
-      color:white; background:#374151; transition:transform .04s ease, filter .2s ease, background .2s ease;
-      border:1px solid rgba(255,255,255,0.08);
-    }
-    button.primary{ background: linear-gradient(180deg, var(--accent), #15803d); }
-    button.alt{ background: linear-gradient(180deg, var(--accent-2), #1d4ed8); }
-    button.ghost{ background: transparent; color: var(--muted); border:1px dashed rgba(255,255,255,0.25); }
+    button{ appearance:none; border:none; cursor:pointer; padding:12px 16px; border-radius:12px; font-weight:700; color:white; background:#374151; transition:transform .04s ease, filter .2s ease, background .2s ease; border:1px solid rgba(255,255,255,0.08); }
+    button.primary{ background:linear-gradient(180deg,var(--accent),#15803d); }
+    button.alt{ background:linear-gradient(180deg,var(--accent-2),#1d4ed8); }
+    button.ghost{ background:transparent; color:var(--muted); border:1px dashed rgba(255,255,255,0.25); }
     button:disabled{ opacity:.6; cursor:not-allowed; filter:grayscale(.2); }
-    button:active{ transform: translateY(1px) }
+    button:active{ transform:translateY(1px); }
     .footer{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:14px; color:var(--muted); font-size:12px; }
     .steps{ display:flex; align-items:center; gap:6px; }
-    .dot{
-      width:10px; height:10px; border-radius:999px; background:#374151; border:1px solid rgba(255,255,255,0.12);
-      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.15);
-    }
-    .dot.on{ background: var(--accent); border-color: rgba(34,197,94,0.8) }
-    .dot.ans{ background: #f59e0b; border-color: rgba(245,158,11,0.8) }
+    .dot{ width:10px; height:10px; border-radius:999px; background:#374151; border:1px solid rgba(255,255,255,0.12); box-shadow: inset 0 0 0 2px rgba(0,0,0,0.15); }
+    .dot.on{ background:var(--accent); border-color:rgba(34,197,94,0.8); }
+    .dot.ans{ background:#f59e0b; border-color:rgba(245,158,11,0.8); }
     .grid{ display:grid; grid-template-columns:1fr auto; gap:14px; align-items:center; }
     select{ padding:10px 12px; border-radius:10px; background:rgba(255,255,255,0.05); color:var(--text); border:1px solid rgba(255,255,255,0.12); font-weight:600; }
     .sr{ position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden; }
@@ -80,7 +50,7 @@
   <div class="wrap">
     <header>
       <div>
-        <div class="title">Luck By Chance — Syngenta..!</div>
+        <div class="title">Luck By Chance — Syngenta...!</div>
         <div class="round" id="roundInfo">Loading…</div>
         <div id="status" class="loader">Fetching questions from Google Sheets…</div>
       </div>
@@ -134,15 +104,62 @@
   </div>
 
   <script>
-    // Your GViz JSON endpoint (JSONP)
-    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS9qHgg7F619brF31ic1kAQfqx_qPnTxNyP5-HeKTzD7KEokWdhdT8uidQDzQHDkOuNjcYs4ivURKp7/gviz/tq?gid=0&tqx=out:json';
-    // Force header usage if available
-    const GVIZ_URL = CSV_URL.includes('headers=') ? CSV_URL : CSV_URL + '&headers=1';
+    // 1) Paste your published CSV URL here
+    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS9qHgg7F619brF31ic1kAQfqx_qPnTxNyP5-HeKTzD7KEokWdhdT8uidQDzQHDkOuNjcYs4ivURKp7/pub?gid=0&single=true&output=csv';
 
-    console.log("GVIZ_URL");
-    console.log(GVIZ_URL);
+    // 2) Minimal CSV parser (handles quotes and commas)
+    function parseCSV(text){
+      const rows = [];
+      let i=0, field='', row=[], inQuotes=false;
+      while(i < text.length){
+        const c = text[i];
+        if(inQuotes){
+          if(c === '"'){
+            if(text[i+1] === '"'){ field += '"'; i++; } // escaped "
+            else { inQuotes = false; }
+          } else {
+            field += c;
+          }
+        } else {
+          if(c === '"'){ inQuotes = true; }
+          else if(c === ','){ row.push(field); field=''; }
+          else if(c === '\\n' || c === '\\r'){
+            if(field !== '' || row.length){ row.push(field); rows.push(row); row=[]; field=''; }
+            // swallow \\r\\n pairs
+            if(c === '\\r' && text[i+1] === '\\n') i++;
+          } else {
+            field += c;
+          }
+        }
+        i++;
+      }
+      if(field !== '' || row.length){ row.push(field); rows.push(row); }
+      return rows;
+    }
 
-    // UI
+    function rowsToObjects(rows){
+      if(!rows.length) return [];
+      const header = rows[0].map(h => h.trim().toLowerCase());
+      const idx = (name) => header.indexOf(name);
+      const idI = idx('id'), catI = idx('category'), promptI = idx('prompt'),
+            h1I = idx('hint1'), h2I = idx('hint2'), ansI = idx('answer');
+
+      const out = [];
+      for(let r=1; r<rows.length; r++){
+        const row = rows[r];
+        if(!row[idI]) continue;
+        out.push({
+          id: Number(row[idI]),
+          category: String(row[catI]||'').trim(),
+          prompt: String(row[promptI]||'').trim(),
+          hints: [String(row[h1I]||'' ).trim(), String(row[h2I]||'').trim()].filter(Boolean),
+          answer: String(row[ansI]||'').trim()
+        });
+      }
+      return out;
+    }
+
+    // UI wiring (same flow as before)
     const els = {
       status: document.getElementById('status'),
       roundInfo: document.getElementById('roundInfo'),
@@ -167,43 +184,54 @@
       dotAnswer: document.getElementById('dotAnswer')
     };
 
-    const state = { QUESTIONS: [], order: [], index: 0, revealStep: 0 };
-
-    function setStatus(msg, isError=false){
-      if(!els.status) return;
-      els.status.textContent = msg;
-      els.status.className = isError ? 'error' : 'loader';
-    }
+    const state = {
+      QUESTIONS: [],
+      order: [],
+      index: 0,
+      revealStep: 0
+    };
 
     function enableControls(on){
       [els.jump, els.randomBtn, els.revealBtn, els.resetBtn, els.prevBtn, els.nextBtn, els.shuffleBtn]
-        .forEach(el => el && (el.disabled = !on));
+        .forEach(el => el.disabled = !on);
     }
-    function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-    function setIndex(i){ if(i<0)i=0; if(i>state.order.length-1)i=state.order.length-1; state.index=i; state.revealStep=0; render(); }
+
+    function shuffle(array){
+      for(let i=array.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [array[i],array[j]]=[array[j],array[i]];
+      }
+      return array;
+    }
+
+    function setIndex(i){
+      if(i<0) i=0;
+      if(i>state.order.length-1) i=state.order.length-1;
+      state.index = i; state.revealStep = 0; render();
+    }
+
     function revealNext(){ if(state.revealStep<3){ state.revealStep++; renderReveal(); } }
-    function resetReveals(){ state.revealStep=0; renderReveal(); }
+    function resetReveals(){ state.revealStep = 0; renderReveal(); }
 
     function render(){
       const q = state.QUESTIONS[state.order[state.index]];
-      els.category.textContent = q.category || 'Category';
-      els.prompt.textContent = q.prompt || '';
-      els.hint1.textContent = (q.hints && q.hints[0]) || '';
-      els.hint2.textContent = (q.hints && q.hints[1]) || '';
-      els.answer.textContent = q.answer || '';
-      if(els.roundInfo) els.roundInfo.textContent = `Round ${state.index+1} of ${state.order.length}`;
+      els.category.textContent = q.category;
+      els.prompt.textContent = q.prompt;
+      els.hint1.textContent = q.hints[0] || '';
+      els.hint2.textContent = q.hints[1] || '';
+      els.answer.textContent = q.answer;
+      els.roundInfo.textContent = `Round ${state.index+1} of ${state.order.length}`;
 
-      if(els.jump){
-        els.jump.innerHTML = '';
-        state.order.forEach((qi, pos)=>{
-          const opt = document.createElement('option');
-          const item = state.QUESTIONS[qi];
-          opt.value = String(pos);
-          opt.textContent = `${pos+1}. ${item.category} — ${item.prompt}`.slice(0, 120);
-          if(pos===state.index) opt.selected = true;
-          els.jump.appendChild(opt);
-        });
-      }
+      els.jump.innerHTML = '';
+      state.order.forEach((qi,pos)=>{
+        const opt=document.createElement('option');
+        const item=state.QUESTIONS[qi];
+        opt.value=String(pos);
+        opt.textContent = `${pos+1}. ${item.category} — ${item.prompt}`.slice(0,120);
+        if(pos===state.index) opt.selected=true;
+        els.jump.appendChild(opt);
+      });
+
       renderReveal();
     }
 
@@ -212,26 +240,27 @@
       els.hint1Wrap.classList.toggle('hidden', !(step>=1));
       els.hint2Wrap.classList.toggle('hidden', !(step>=2));
       els.answerWrap.classList.toggle('hidden', !(step>=3));
+
       els.dotPrompt.classList.toggle('on', true);
       els.dotHint1.classList.toggle('on', step>=1);
       els.dotHint2.classList.toggle('on', step>=2);
       els.dotAnswer.classList.toggle('on', step>=3);
       els.dotAnswer.classList.toggle('ans', step>=3);
+
       els.revealBtn.disabled = step>=3;
       els.revealBtn.textContent = step>=3 ? 'Answer shown' : 'Reveal next (Space)';
       els.prevBtn.disabled = state.index===0;
       els.nextBtn.disabled = state.index===state.order.length-1;
-      enableControls(true);
     }
 
-    // Controls
+    // Events
     els.revealBtn.addEventListener('click', revealNext);
     els.resetBtn.addEventListener('click', resetReveals);
-    els.prevBtn.addEventListener('click', ()=> setIndex(state.index-1));
-    els.nextBtn.addEventListener('click', ()=> setIndex(state.index+1));
+    els.prevBtn.addEventListener('click', ()=>setIndex(state.index-1));
+    els.nextBtn.addEventListener('click', ()=>setIndex(state.index+1));
     els.shuffleBtn.addEventListener('click', ()=>{ shuffle(state.order); setIndex(0); });
     els.randomBtn.addEventListener('click', ()=>{ const r=Math.floor(Math.random()*state.order.length); setIndex(r); });
-    els.jump.addEventListener('change', (e)=> setIndex(parseInt(e.target.value, 10)));
+    els.jump.addEventListener('change', (e)=> setIndex(parseInt(e.target.value,10)));
     window.addEventListener('keydown', (e)=>{
       if(e.key===' '){ e.preventDefault(); revealNext(); }
       else if(e.key==='ArrowRight'){ setIndex(state.index+1); }
@@ -239,83 +268,26 @@
       else if(e.key.toLowerCase()==='r'){ resetReveals(); }
     });
 
-    // JSONP handler — robust header detection
-    window.google = window.google || {};
-    window.google.visualization = window.google.visualization || {};
-    window.google.visualization.Query = {
-      setResponse: function(resp){
-        try{
-          if(!resp || !resp.table) throw new Error('Invalid GViz response (no table).');
+    // Load CSV
+    (async function init(){
+      try{
+        const res = await fetch(CSV_URL, { cache:'no-store' });
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const text = await res.text();
+        const rows = parseCSV(text);
+        const data = rowsToObjects(rows);
 
-          const cols = resp.table.cols || [];
-          const labels = cols.map(c => String(c.label || '').trim().toLowerCase());
-          const rowsRaw = resp.table.rows || [];
-          const rows = rowsRaw.map(r => (cols.map((_, i) => (r.c && r.c[i] && r.c[i].v != null) ? r.c[i].v : '')));
-
-          function toIndexMap(headerArr){
-            const h = headerArr.map(x => String(x).trim().toLowerCase());
-            return {
-              id: h.indexOf('id'),
-              category: h.indexOf('category'),
-              prompt: h.indexOf('prompt'),
-              hint1: h.indexOf('hint1'),
-              hint2: h.indexOf('hint2'),
-              answer: h.indexOf('answer')
-            };
-          }
-
-          let headerSource = 'labels';
-          let map = toIndexMap(labels);
-          let dataRows = rows;
-
-          // If labels missing required fields, fall back to first row as header
-          const required = ['id','category','prompt','answer'];
-          const missing = required.some(k => map[k] === -1);
-          if(missing){
-            if(rows.length === 0) throw new Error('No data to infer header from.');
-            headerSource = 'first-row';
-            map = toIndexMap(rows[0]);
-            dataRows = rows.slice(1);
-            if(required.some(k => map[k] === -1)){
-              throw new Error('Missing required columns: id, category, prompt, answer. Ensure your first row has these exact headers.');
-            }
-          }
-
-          const data = dataRows
-            .filter(r => r[map.id] !== '' && r[map.id] != null)
-            .map(r => ({
-              id: Number(r[map.id]),
-              category: String(r[map.category]||'').trim(),
-              prompt: String(r[map.prompt]||'').trim(),
-              hints: [
-                map.hint1 !== -1 ? String(r[map.hint1]||'').trim() : '',
-                map.hint2 !== -1 ? String(r[map.hint2]||'').trim() : ''
-              ].filter(Boolean),
-              answer: String(r[map.answer]||'').trim()
-            }))
-            .filter(obj => !Number.isNaN(obj.id) && obj.prompt && obj.answer);
-
-          if(!data.length){
-            throw new Error('No valid rows parsed. Check sheet contents and header names.');
-          }
-
-          state.QUESTIONS = data;
-          state.order = [...state.QUESTIONS.keys()];
-          setStatus(`Loaded ${data.length} rows from Google Sheets (${headerSource}).`);
-          setIndex(0);
-        }catch(err){
-          console.error('GViz parse error:', err);
-          setStatus('Failed to parse GViz JSON: ' + err.message, true);
-        }
+        if(!data.length) throw new Error('No rows parsed. Check header names and published sheet selection.');
+        state.QUESTIONS = data;
+        state.order = [...state.QUESTIONS.keys()];
+        els.status.textContent = 'Loaded questions from Google Sheets.';
+        enableControls(true);
+        setIndex(0);
+      }catch(err){
+        console.error(err);
+        els.status.className = 'error';
+        els.status.textContent = 'Failed to load from Google Sheets: ' + err.message;
       }
-    };
-
-    // Inject GViz script (JSONP) — bypasses CORS
-    (function loadGViz(){
-      const s = document.createElement('script');
-      s.src = GVIZ_URL;
-      s.onerror = () => setStatus('Failed to load Google Sheets GViz URL.', true);
-      document.head.appendChild(s);
     })();
   </script>
 </body>
