@@ -109,6 +109,7 @@
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/1yphdwEzw8mNy3YIXU7KAfHIdoCIJRtvtT5eFTmAzKSE/gviz/tq?gid=0&headers=1&tqx=out:json';
     // 2) Minimal CSV parser (handles quotes and commas)
     function parseCSV(text){
+      console.log(text);
       const rows = [];
       let i=0, field='', row=[], inQuotes=false;
       while(i < text.length){
