@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luck By Chance — Syngenta</title>
+  <title>Luck By Chance — Sheet Powered</title>
   <style>
     :root{
       --bg:#0f172a; --bg-accent:#111827; --card:#111827; --text:#e5e7eb; --muted:#9ca3af;
@@ -80,7 +80,7 @@
   <div class="wrap">
     <header>
       <div>
-        <div class="title">Luck By Chance — Syngenta</div>
+        <div class="title">Luck By Chance — Sheet Powered</div>
         <div class="round" id="roundInfo">Loading…</div>
         <div id="status" class="loader">Fetching questions from Google Sheets…</div>
       </div>
@@ -121,7 +121,6 @@
         </div>
 
         <div class="footer">
-          -
           <div class="steps" aria-label="Reveal progress">
             <div class="dot" id="dotPrompt" title="Prompt"></div>
             <div class="dot" id="dotHint1" title="Hint 1"></div>
@@ -135,10 +134,12 @@
   </div>
 
   <script>
-    // Important: This is the GViz JSON endpoint (JSONP), not CSV. We load it via <script> to avoid CORS.
-    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS9qHgg7F619brF31ic1kAQfqx_qPnTxNyP5-HeKTzD7KEokWdhdT8uidQDzQHDkOuNjcYs4ivURKp7/gviz/tq?gid=0&tqx=out:json';
+    // Your GViz JSON endpoint (JSONP)
+    const CSV_URL = '<https://docs.google.com/spreadsheets/d/e/2PACX-1vS9qHgg7F619brF31ic1kAQfqx_qPnTxNyP5-HeKTzD7KEokWdhdT8uidQDzQHDkOuNjcYs4ivURKp7/gviz/tq?gid=0&tqx=out:json>';
+    // Force header usage if available
+    const GVIZ_URL = CSV_URL.includes('headers=') ? CSV_URL : CSV_URL + '&headers=1';
 
-    // UI elements
+    // UI
     const els = {
       status: document.getElementById('status'),
       roundInfo: document.getElementById('roundInfo'),
@@ -163,56 +164,43 @@
       dotAnswer: document.getElementById('dotAnswer')
     };
 
-    const state = {
-      QUESTIONS: [],
-      order: [],
-      index: 0,
-      revealStep: 0
-    };
+    const state = { QUESTIONS: [], order: [], index: 0, revealStep: 0 };
+
+    function setStatus(msg, isError=false){
+      if(!els.status) return;
+      els.status.textContent = msg;
+      els.status.className = isError ? 'error' : 'loader';
+    }
 
     function enableControls(on){
       [els.jump, els.randomBtn, els.revealBtn, els.resetBtn, els.prevBtn, els.nextBtn, els.shuffleBtn]
         .forEach(el => el && (el.disabled = !on));
     }
-
-    function shuffle(array){
-      for(let i=array.length-1;i>0;i--){
-        const j=Math.floor(Math.random()*(i+1));
-        [array[i],array[j]]=[array[j],array[i]];
-      }
-      return array;
-    }
-
-    function setIndex(i){
-      if(i<0) i=0;
-      if(i>state.order.length-1) i=state.order.length-1;
-      state.index = i; state.revealStep = 0; render();
-    }
-
+    function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+    function setIndex(i){ if(i<0)i=0; if(i>state.order.length-1)i=state.order.length-1; state.index=i; state.revealStep=0; render(); }
     function revealNext(){ if(state.revealStep<3){ state.revealStep++; renderReveal(); } }
-    function resetReveals(){ state.revealStep = 0; renderReveal(); }
+    function resetReveals(){ state.revealStep=0; renderReveal(); }
 
     function render(){
       const q = state.QUESTIONS[state.order[state.index]];
       els.category.textContent = q.category || 'Category';
       els.prompt.textContent = q.prompt || '';
-      els.hint1.textContent = q.hints?.[0] || '';
-      els.hint2.textContent = q.hints?.[1] || '';
+      els.hint1.textContent = (q.hints && q.hints[0]) || '';
+      els.hint2.textContent = (q.hints && q.hints[1]) || '';
       els.answer.textContent = q.answer || '';
+      if(els.roundInfo) els.roundInfo.textContent = `Round ${state.index+1} of ${state.order.length}`;
 
-      els.roundInfo.textContent = `Round ${state.index+1} of ${state.order.length}`;
-
-      // Populate jump menu
-      els.jump.innerHTML = '';
-      state.order.forEach((qi, pos)=>{
-        const opt = document.createElement('option');
-        const item = state.QUESTIONS[qi];
-        opt.value = String(pos);
-        opt.textContent = `${pos+1}. ${item.category} — ${item.prompt}`.slice(0, 120);
-        if(pos===state.index) opt.selected = true;
-        els.jump.appendChild(opt);
-      });
-
+      if(els.jump){
+        els.jump.innerHTML = '';
+        state.order.forEach((qi, pos)=>{
+          const opt = document.createElement('option');
+          const item = state.QUESTIONS[qi];
+          opt.value = String(pos);
+          opt.textContent = `${pos+1}. ${item.category} — ${item.prompt}`.slice(0, 120);
+          if(pos===state.index) opt.selected = true;
+          els.jump.appendChild(opt);
+        });
+      }
       renderReveal();
     }
 
@@ -221,20 +209,19 @@
       els.hint1Wrap.classList.toggle('hidden', !(step>=1));
       els.hint2Wrap.classList.toggle('hidden', !(step>=2));
       els.answerWrap.classList.toggle('hidden', !(step>=3));
-
       els.dotPrompt.classList.toggle('on', true);
       els.dotHint1.classList.toggle('on', step>=1);
       els.dotHint2.classList.toggle('on', step>=2);
       els.dotAnswer.classList.toggle('on', step>=3);
       els.dotAnswer.classList.toggle('ans', step>=3);
-
       els.revealBtn.disabled = step>=3;
       els.revealBtn.textContent = step>=3 ? 'Answer shown' : 'Reveal next (Space)';
       els.prevBtn.disabled = state.index===0;
       els.nextBtn.disabled = state.index===state.order.length-1;
+      enableControls(true);
     }
 
-    // Events
+    // Controls
     els.revealBtn.addEventListener('click', revealNext);
     els.resetBtn.addEventListener('click', resetReveals);
     els.prevBtn.addEventListener('click', ()=> setIndex(state.index-1));
@@ -249,55 +236,82 @@
       else if(e.key.toLowerCase()==='r'){ resetReveals(); }
     });
 
-    // JSONP handler for GViz (uses column labels, not first data row)
+    // JSONP handler — robust header detection
     window.google = window.google || {};
     window.google.visualization = window.google.visualization || {};
     window.google.visualization.Query = {
       setResponse: function(resp){
         try{
-          if(!resp || !resp.table || !resp.table.cols) throw new Error('Invalid GViz response');
+          if(!resp || !resp.table) throw new Error('Invalid GViz response (no table).');
 
-          const labels = resp.table.cols.map(c => String(c.label || '').trim().toLowerCase());
-          const col = name => labels.indexOf(name);
-          const idI=col('id'), catI=col('category'), promptI=col('prompt'),
-                h1I=col('hint1'), h2I=col('hint2'), ansI=col('answer');
+          const cols = resp.table.cols || [];
+          const labels = cols.map(c => String(c.label || '').trim().toLowerCase());
+          const rowsRaw = resp.table.rows || [];
+          const rows = rowsRaw.map(r => (cols.map((_, i) => (r.c && r.c[i] && r.c[i].v != null) ? r.c[i].v : '')));
 
-          if([idI,catI,promptI,ansI].some(i => i === -1)){
-            throw new Error('Missing one or more required columns: id, category, prompt, answer (hint1, hint2 optional).');
+          function toIndexMap(headerArr){
+            const h = headerArr.map(x => String(x).trim().toLowerCase());
+            return {
+              id: h.indexOf('id'),
+              category: h.indexOf('category'),
+              prompt: h.indexOf('prompt'),
+              hint1: h.indexOf('hint1'),
+              hint2: h.indexOf('hint2'),
+              answer: h.indexOf('answer')
+            };
           }
 
-          const rows = resp.table.rows || [];
-          const data = rows.map(r => {
-            const get = i => (r.c && r.c[i] && r.c[i].v != null) ? r.c[i].v : '';
-            return {
-              id: Number(get(idI)),
-              category: String(get(catI) || '').trim(),
-              prompt: String(get(promptI) || '').trim(),
-              hints: [String(get(h1I) || '').trim(), String(get(h2I) || '').trim()].filter(Boolean),
-              answer: String(get(ansI) || '').trim()
-            };
-          }).filter(obj => !Number.isNaN(obj.id) && obj.prompt && obj.answer);
+          let headerSource = 'labels';
+          let map = toIndexMap(labels);
+          let dataRows = rows;
 
-          if(!data.length) throw new Error('No data rows parsed. Check your sheet and column labels.');
+          // If labels missing required fields, fall back to first row as header
+          const required = ['id','category','prompt','answer'];
+          const missing = required.some(k => map[k] === -1);
+          if(missing){
+            if(rows.length === 0) throw new Error('No data to infer header from.');
+            headerSource = 'first-row';
+            map = toIndexMap(rows[0]);
+            dataRows = rows.slice(1);
+            if(required.some(k => map[k] === -1)){
+              throw new Error('Missing required columns: id, category, prompt, answer. Ensure your first row has these exact headers.');
+            }
+          }
+
+          const data = dataRows
+            .filter(r => r[map.id] !== '' && r[map.id] != null)
+            .map(r => ({
+              id: Number(r[map.id]),
+              category: String(r[map.category]||'').trim(),
+              prompt: String(r[map.prompt]||'').trim(),
+              hints: [
+                map.hint1 !== -1 ? String(r[map.hint1]||'').trim() : '',
+                map.hint2 !== -1 ? String(r[map.hint2]||'').trim() : ''
+              ].filter(Boolean),
+              answer: String(r[map.answer]||'').trim()
+            }))
+            .filter(obj => !Number.isNaN(obj.id) && obj.prompt && obj.answer);
+
+          if(!data.length){
+            throw new Error('No valid rows parsed. Check sheet contents and header names.');
+          }
 
           state.QUESTIONS = data;
           state.order = [...state.QUESTIONS.keys()];
-          els.status.textContent = 'Loaded from Google Sheets.';
-          enableControls(true);
+          setStatus(`Loaded ${data.length} rows from Google Sheets (${headerSource}).`);
           setIndex(0);
         }catch(err){
-          console.error(err);
-          els.status.className = 'error';
-          els.status.textContent = 'Failed to parse GViz JSON: ' + err.message;
+          console.error('GViz parse error:', err);
+          setStatus('Failed to parse GViz JSON: ' + err.message, true);
         }
       }
     };
 
-    // Inject the GViz script to bypass CORS
+    // Inject GViz script (JSONP) — bypasses CORS
     (function loadGViz(){
       const s = document.createElement('script');
-      s.src = CSV_URL;
-      s.onerror = () => { els.status.className='error'; els.status.textContent='Failed to load Google Sheets GViz URL.'; };
+      s.src = GVIZ_URL;
+      s.onerror = () => setStatus('Failed to load Google Sheets GViz URL.', true);
       document.head.appendChild(s);
     })();
   </script>
