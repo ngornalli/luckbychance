@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luck By Chance — Sheet Powered</title>
+  <title>Luck By Chance — Syngenta AMEA SFDC</title>
   <style>
     :root{
       --bg:#0f172a; --bg-accent:#111827; --card:#111827; --text:#e5e7eb; --muted:#9ca3af;
@@ -80,7 +80,7 @@
   <div class="wrap">
     <header>
       <div>
-        <div class="title">Luck By Chance — Sheet Powered</div>
+        <div class="title">Luck By Chance — Syngenta AMEA SFDC</div>
         <div class="round" id="roundInfo">Loading…</div>
         <div id="status" class="loader">Fetching questions from Google Sheets…</div>
       </div>
@@ -108,7 +108,8 @@
           </div>
           <div class="answer hidden" id="answer">
             <h3>Answer</h3>
-            <p id="answerText"></p>
+            <p id="answerText"></p> <br/>
+            <p id="detailsText"></p>
           </div>
         </div>
 
@@ -149,6 +150,7 @@
       hint1: document.getElementById('hint1Text'),
       hint2: document.getElementById('hint2Text'),
       answer: document.getElementById('answerText'),
+      details: document.getElementById('detailsText'),
       revealBtn: document.getElementById('revealBtn'),
       resetBtn: document.getElementById('resetBtn'),
       prevBtn: document.getElementById('prevBtn'),
@@ -185,6 +187,7 @@
       els.hint1.textContent = q.hints?.[0] || '';
       els.hint2.textContent = q.hints?.[1] || '';
       els.answer.textContent = q.answer || '';
+      els.details.textContent = q.details || '';
       if(els.roundInfo) els.roundInfo.textContent = `Round ${state.index+1} of ${state.order.length}`;
 
       if(els.jump){
@@ -255,14 +258,15 @@
               hints: h.indexOf('hints'),
               hint1: h.indexOf('hint1'),
               hint2: h.indexOf('hint2'),
-              answer: h.indexOf('answer')
+              answer: h.indexOf('answer'),
+              details: h.indexOf('details')
             };
           };
 
           let map = toIndexMap(labels);
           let dataRows = rows;
 
-          const required = ['id','category','prompt','answer'];
+          const required = ['id','category','prompt','answer','details'];
           const missing = required.some(k => map[k] === -1);
           if(missing){
             if(rows.length === 0) throw new Error('No data to infer header from.');
@@ -296,7 +300,8 @@
                 category: String(r[map.category]||'').trim(),
                 prompt: String(r[map.prompt]||'').trim(),
                 hints: hintsArr.slice(0, 2), // UI shows two hints
-                answer: String(r[map.answer]||'').trim()
+                answer: String(r[map.answer]||'').trim(),
+                details: String(r[map.details]||'').trim()
               };
             })
             .filter(obj => !Number.isNaN(obj.id) && obj.prompt && obj.answer);
